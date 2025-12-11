@@ -54,3 +54,10 @@ Your ToDos are located in `part9/app.py` and `part9/models.py`.
     either the value `DEFAULT` (yellow background variant) or `GREEN`
     (the new one). Save the current value to the `config.json` file so
     that users can permanently change their highlighting.
+
+3. Now that you are starting to become an OOP expert, you also notice that
+   it would be cleaner to move the `save_config` function from the newly
+   created `file_utilities` module into the `Configuration` class. 
+   Since you are already familiar with this kind of refactoring, you move
+   the function into the class, rename it to `save`, and update the
+   corresponding code in `app.py` to use the new method.
