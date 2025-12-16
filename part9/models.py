@@ -84,10 +84,16 @@ class SearchResult:
 
     # ToDo 0 ii (move the printing of a single SearchResult to a method print inside the SearchResult class, move ansi_highlight along with it)
     @staticmethod
-    def ansi_highlight(text: str, spans: List[Tuple[int, int]]) -> str:
+    def ansi_highlight(text: str, spans: List[Tuple[int, int]], highlight_mode: str) -> str: # add parameter highlight_mode
         """Return text with ANSI highlight escape codes inserted."""
         if not spans:
             return text
+
+        # add if/else statement to choose color setting
+        if highlight_mode == "GREEN":
+            start_code = "\033[1;92m"  # bold green text
+        else:
+            start_code = "\033[43m\033[30m"  # yellow background, black text
 
         spans = sorted(spans)
         merged = []
@@ -108,7 +114,7 @@ class SearchResult:
         for s, e in merged:
             out.append(text[i:s])
             # ToDo 2: You will need to use the new setting and for it a different ANSI color code: "\033[1;92m"
-            out.append("\033[43m\033[30m")  # yellow background, black text
+            out.append(start_code) # replace variable with start_code
             out.append(text[s:e])
             # ToDo 2: This stays the same. It just means "continue with default colors"
             out.append("\033[0m")  # reset
@@ -116,18 +122,18 @@ class SearchResult:
         out.append(text[i:])
         return "".join(out)
 
-    def print(self, idx: int, highlight: bool, total_docs: int) -> None:
+    def print(self, idx: int, highlight: bool, total_docs: int, highlight_mode: str) -> None: # add parameter highlight_mode
         title_line = (
             # ToDo 2: You will need to pass the new setting, the highlight_mode to ansi_highlight and use it there
-            ansi_highlight(r.title, r.title_spans)
+            SearchResult.ansi_highlight(self.title, self.title_spans, highlight_mode) # add highlight_mode
             if highlight
-            else r.title
+            else self.title
         )
         print(f"\n[{idx}/{total_docs}] {title_line}")
-        for lm in r.line_matches:
+        for lm in self.line_matches:
             line_out = (
                 # ToDo 2: You will need to pass the new setting, the highlight_mode to ansi_highlight and use it there
-                ansi_highlight(lm.text, lm.spans)
+                SearchResult.ansi_highlight(lm.text, lm.spans, highlight_mode) # add highlight_mode
                 if highlight
                 else lm.text
             )

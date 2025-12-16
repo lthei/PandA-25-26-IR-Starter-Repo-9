@@ -10,6 +10,7 @@ from .models import Sonnet
 POETRYDB_URL = "https://poetrydb.org/author,title/Shakespeare;Sonnet"
 CACHE_FILENAME = "sonnets.json"
 
+# ToDo 2: add highlight_mode and update class methods
 # ---- class Configuration ----
 class Configuration:
     """
@@ -22,6 +23,7 @@ class Configuration:
         # Default settings used at program startup.
         self.highlight = True
         self.search_mode = "AND"
+        self.highlight_mode = "DEFAULT" # add new config value to store highlight mode
 
     def copy(self):
         """
@@ -49,10 +51,15 @@ class Configuration:
         if "search_mode" in other and other["search_mode"] in ["AND", "OR"]:
             self.search_mode = other["search_mode"]
 
+        # update with new value highlight mode
+        if "highlight_mode" in other and other["highlight_mode"] in ("DEFAULT", "GREEN"):
+            self.highlight_mode = other["highlight_mode"]
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "highlight": self.highlight,
             "search_mode": self.search_mode,
+            "highlight_mode": self.highlight_mode # update with new value highlight mode
         }
 
     # ToDo 3: moved to Config class and renamed

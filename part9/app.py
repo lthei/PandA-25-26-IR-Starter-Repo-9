@@ -28,6 +28,7 @@ def print_results(
     query: str,
     results: List[SearchResult],
     highlight: bool,
+    highlight_mode: str, # add highlight_mode
     query_time_ms: float | None = None,
 ) -> None:
     total_docs = len(results)
@@ -41,7 +42,7 @@ def print_results(
     for idx, r in enumerate(matched, start=1):
         # ToDo 0: From here on move the printing code to SearchResult.print(...)
         #         You should then be able to call r.print(idx, highlight)
-        r.print(idx, highlight, total_docs)
+        r.print(idx, highlight, total_docs, highlight_mode) # add highlight_mode
 
 # ---------- Paths & data loading ----------
 # ToDo 1: Move to file_utilities.py
@@ -118,6 +119,16 @@ def main() -> None:
                 continue
 
             # ToDo 2: A new setting is added here. It's command string is ':hl-mode'.
+            # copy block from above and adapt it
+            if raw.startswith(":hl-mode"):
+                parts = raw.split()
+                if len(parts) == 2 and parts[1].upper() in ("DEFAULT", "GREEN"):
+                    config.highlight_mode = parts[1].upper()
+                    print("Highlight mode set to", config.highlight_mode)
+                    config.save()
+                else:
+                    print("Usage: :hl-mode DEFAULT|GREEN")
+                continue
 
             print("Unknown command. Type :help for commands.")
             continue
@@ -165,7 +176,7 @@ def main() -> None:
         elapsed_ms = (time.perf_counter() - start) * 1000
 
         # ToDo 2: You will need to pass the new setting, the highlight_mode to print_results and use it there
-        print_results(raw, combined_results, config.highlight, elapsed_ms)
+        print_results(raw, combined_results, config.highlight, config.highlight_mode, elapsed_ms) # add highlight_mode
 
 if __name__ == "__main__":
     main()
