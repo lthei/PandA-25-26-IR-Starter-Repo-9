@@ -11,8 +11,8 @@ from typing import List
 import time
 
 from .constants import BANNER, HELP
-from .models import Sonnet, SearchResult, LineMatch
-from .file_utilities import load_config, load_sonnets, Configuration
+from .models import SearchResult
+from .file_utilities import load_config, load_sonnets
 
 
 # ToDo 0 iii: Move find_spans to Sonnet to make this work.
