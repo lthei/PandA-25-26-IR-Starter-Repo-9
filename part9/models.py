@@ -67,17 +67,17 @@ class SearchResult:
 
         # Merge line_matches by line number
 
-        lines_by_no = {lm.line_no: lm.copy for lm in self.line_matches}
+        lines_by_no = {lm.line_no: lm.copy() for lm in self.line_matches}
         for lm in other.line_matches:
             ln = lm.line_no
             if ln in lines_by_no:
                 # extend spans & keep original text
                 lines_by_no[ln].spans.extend(lm.spans)
             else:
-                lines_by_no[ln] = lm.copy
+                lines_by_no[ln] = lm.copy()
 
         combined.line_matches = sorted(
-            lines_by_no.values(), key=lambda lm: lm["line_no"]
+            lines_by_no.values(), key=lambda lm: lm.line_no
         )
 
         return combined
